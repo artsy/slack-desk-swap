@@ -4,8 +4,8 @@ module CommandService
     LEAVE = 'leave'
   ]
   def self.process(text, user_id, user_name, team_id)
-    case text.split.first
-      JOIN then join(user_id, user_name, team_id)
+    case text.split&.first
+    when JOIN then join(user_id, user_name, team_id)
     else
       "Unknown command!"
     end
@@ -13,6 +13,7 @@ module CommandService
 
   def self.join(user_id, user_name, team_id)
     team = Team.find_or_create!(team_id: team_id)
-    team.users.find_or_create!(user_id: user_id, user_name: user_name)
+    user = team.users.find_or_create!(user_id: user_id, user_name: user_name)
+    "Awesome! You are setup for desk-sawp! wait for our message to setup your first 🖥 🔄"
   end
 end

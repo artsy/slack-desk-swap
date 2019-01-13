@@ -9,7 +9,7 @@ class Api::SlackController < ApplicationController
   private
 
   def validate_slack_token
-    head(:forbidden) unless params[:token] == Application.config_for(:slack, slash_command_token)
+    head(:forbidden) unless params[:token].present? && params[:token] == Rails.application.config_for(:slack)['slash_command_token']
   end
 
   def command_params
