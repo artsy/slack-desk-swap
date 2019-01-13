@@ -2,8 +2,8 @@ class Api::SlackController < ApplicationController
   before_action :validate_slack_token
 
   def command
-    response = CommandService.process(params.slice(:text, :user_id, :user_name, :team_id))
-    render json: { response_type: "in_channel", text: response }
+    response = CommandService.process(command_params.slice(:text, :user_id, :user_name, :team_id))
+    render json: response.as_json
   end
 
   private

@@ -9,14 +9,14 @@ class CommandServiceTest < ActiveSupport::TestCase
   test "creates team" do
     assert_difference('Team.count', 1) do
       response = CommandService.process('join', 'user_id', 'user_name', 'team_id')
-      assert_equal response, "Awesome! You are setup for desk-sawp! wait for our message to setup your first 🖥 🔄"
+      assert_equal response.text, "Awesome! You are setup for desk-sawp! Wait for our message to setup your first 🖥 🔄"
     end
   end
 
   test "creates user" do
     assert_difference('User.count', 1) do
       response = CommandService.process('join', 'user_id', 'user_name', 'team_id')
-      assert_equal response, "Awesome! You are setup for desk-sawp! wait for our message to setup your first 🖥 🔄"
+      assert_equal response.text, "Awesome! You are setup for desk-sawp! Wait for our message to setup your first 🖥 🔄"
     end
   end
 end
