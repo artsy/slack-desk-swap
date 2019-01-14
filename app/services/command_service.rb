@@ -4,6 +4,7 @@ module CommandService
     LEAVE = 'leave'
   ]
   def self.process(text, user_id, user_name, team_id)
+    command = Slack::Messages::Formatting.unescape(text)
     case text.split&.first
     when JOIN then join(user_id, user_name, team_id)
     else
