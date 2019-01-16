@@ -1,24 +1,16 @@
-# README
+### What's this?
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- opt in/out per organization
+- on question day (default monday) (per org) we ask each person when they want to swap for this week
+  - it will show them list of days
+- We do match based on responses from above 
+- Location NY/Berlin/London maybe  timezone
+- Stats: we can ask about each person and total stats
 
-Things you may want to cover:
+### Run
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+bundle install
+rake db:create db:migrate
+rackup
+```
