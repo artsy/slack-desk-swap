@@ -10,33 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190113191155) do
+ActiveRecord::Schema.define(version: 20190116141301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "teams", force: :cascade do |t|
-    t.string "team_id"
-    t.string "team_domain"
-    t.integer "question_day"
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "team_id"
+    t.date     "start_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_rounds_on_team_id", using: :btree
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string   "team_id"
+    t.string   "name"
+    t.boolean  "active",     default: true
+    t.string   "domain"
+    t.string   "token"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "user_id"
-    t.string "user_name"
-    t.string "real_name"
-    t.string "department"
-    t.string "tz"
-    t.integer "tz_offset"
-    t.string "location"
-    t.string "setup"
-    t.bigint "team_id"
+    t.string   "user_id"
+    t.string   "user_name"
+    t.string   "real_name"
+    t.string   "department"
+    t.string   "tz"
+    t.integer  "tz_offset"
+    t.string   "location"
+    t.string   "setup"
+    t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["team_id"], name: "index_users_on_team_id"
+    t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
+  add_foreign_key "rounds", "teams"
   add_foreign_key "users", "teams"
 end
