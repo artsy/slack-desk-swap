@@ -1,5 +1,15 @@
-# This file is used by Rack-based servers to start the application.
+ENV['RACK_ENV'] ||= 'development'
 
-require_relative 'config/environment'
+Bundler.require :default
 
-run Rails.application
+require_relative 'commands'
+require 'yaml'
+
+ActiveRecord::Base.establish_connection(YAML.load_file('config/postgresql.yml')[ENV['RACK_ENV']])
+
+NewRelic::Agent.manual_start
+
+SlackRubyBotServer::App.instance.prepare!
+SlackRubyBotServer::Service.start!
+
+run SlackRubyBotServer::Api::Middleware.instance
