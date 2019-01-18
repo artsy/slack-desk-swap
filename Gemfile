@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rake'
 gem 'activerecord', '~> 5.0.0', require: 'active_record'
 gem 'newrelic-slack-ruby-bot'
 gem 'otr-activerecord', '~> 1.2.1'
@@ -16,7 +17,6 @@ group :test do
   gem 'database_cleaner'
   gem 'fabrication'
   gem 'faker'
-  gem 'rake'
   gem 'rspec'
   gem 'vcr'
   gem 'webmock'
