@@ -8,6 +8,7 @@ gem 'pg'
 gem 'rack-server-pages'
 gem 'rack-test'
 gem 'slack-ruby-bot-server'
+gem 'rspec'
 
 group :development, :test do
   gem 'standalone_migrations', '~> 5.2'
@@ -17,7 +18,6 @@ group :test do
   gem 'database_cleaner'
   gem 'fabrication'
   gem 'faker'
-  gem 'rspec'
   gem 'vcr'
   gem 'webmock'
 end
