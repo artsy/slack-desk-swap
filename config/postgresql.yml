@@ -14,4 +14,4 @@ test:
 
 production:
   <<: *default
-  database: slack_desk_swap_production
+  url: <%= ENV["DATABASE_URL"] %>
