@@ -1,0 +1,6 @@
+
+#!/usr/bin/env bash
+# Usage: script/console
+# Starts an IRB console with desk_swap loaded.
+
+exec bundle exec irb -I . -r "desk_swap"
