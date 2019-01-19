@@ -1,2 +1,2 @@
 require 'desk_swap/commands/help'
-require 'desk_swap/commands/whoami'
+require 'desk_swap/commands/join'
