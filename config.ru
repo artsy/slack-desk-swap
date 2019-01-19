@@ -1,18 +1,12 @@
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
 ENV['RACK_ENV'] ||= 'development'
 
-Bundler.require :default
+require 'bundler/setup'
+Bundler.require :default, ENV['RACK_ENV']
 
-require_relative 'commands'
-require 'yaml'
-require 'erb'
-
-ActiveRecord::Base.establish_connection(
-  YAML.load(
-    ERB.new(
-      File.read('config/postgresql.yml')
-    ).result
-  )[ENV['RACK_ENV']]
-)
+require 'slack-ruby-bot-server'
+require 'desk_swap'
 
 NewRelic::Agent.manual_start
 

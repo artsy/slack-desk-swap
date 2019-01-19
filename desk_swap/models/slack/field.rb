@@ -1,1 +1,0 @@
-Slack::Field = Struct.new(:title, :value, :short, keyword_init: true)

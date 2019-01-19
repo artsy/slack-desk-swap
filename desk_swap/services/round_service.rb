@@ -9,13 +9,14 @@ module RoundService
         actions: 7.times.map do |d|
           {
             name: 'choice',
-            text: Date.today + d.days
+            text: Date.today + d.days,
             type: 'button',
             value: Date.today + d.days,
             style: 'primary'
           }
         end
       }
+    ]
   }
   def self.start_round(team_id)
     client = Slack::Web::Client.new

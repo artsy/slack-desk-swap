@@ -1,3 +1,3 @@
-class Round < ApplicationRecord
+class Round < ActiveRecord::Base
   belongs_to :team
 end
