@@ -10,4 +10,11 @@ module CommandService
     user.update!(location: location)
     user
   end
+
+  def self.set_setup(user_id, team_id, setup)
+    team = Team.find(team_id)
+    user = team.users.find_by!(user_id: user_id)
+    user.update!(setup: setup)
+    user
+  end
 end
