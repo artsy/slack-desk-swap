@@ -14,3 +14,5 @@ SlackRubyBotServer::App.instance.prepare!
 SlackRubyBotServer::Service.start!
 
 run SlackRubyBotServer::Api::Middleware.instance
+
+run Api::Middleware.instance

@@ -8,10 +8,10 @@ module RoundService
         attachment_type: 'default',
         actions: 7.times.map do |d|
           {
-            name: 'choice',
-            text: Date.today + d.days,
+            name: 'round_choice',
+            text: (Date.today + d.days).strftime("%a, %b %e"),
             type: 'button',
-            value: Date.today + d.days,
+            value: (Date.today + d.days).iso8601,
             style: 'primary'
           }
         end
@@ -22,7 +22,7 @@ module RoundService
   def self.start_round(team_id)
     team = Team.find(team_id)
     team.rounds.find_or_create_by!(start_date: Date.today) do |created_round|
-      # ask each user about their prefrences for this round
+      # ask each user about their preferences for this round
       team.users.has_location.each do |u|
         im = team.slack_client.im_open(user: u.user_id)
         team.slack_client.chat_postMessage(ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'], callback_id: created_round.id, as_user: true))
