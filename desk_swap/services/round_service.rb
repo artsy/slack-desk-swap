@@ -25,7 +25,9 @@ module RoundService
       # ask each user about their preferences for this round
       team.users.has_location.each do |u|
         im = team.slack_client.im_open(user: u.user_id)
-        team.slack_client.chat_postMessage(ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'], callback_id: created_round.id, as_user: true))
+        ask_preference = ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'])
+        ask_preference[:attachments].first[:callback_id] = created_round.id.to_s
+        team.slack_client.chat_postMessage(ask_preference)
       end
     end
   end
