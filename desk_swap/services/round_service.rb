@@ -27,7 +27,7 @@ module RoundService
         im = team.slack_client.im_open(user: u.user_id)
         ask_preference = ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'])
         ask_preference[:attachments].first[:callback_id] = created_round.id.to_s
-        team.slack_client.chat_postMessage(ask_preference)
+        team.slack_client.chat_postMessage(ask_preference, as_user: true)
       end
     end
   end
