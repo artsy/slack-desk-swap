@@ -11,14 +11,13 @@ module Api
         end
 
         post '/action' do
-          payload = OpenStruct.new(JSON.parse(params[:payload]))
+          payload = JSON.parse(params[:payload], object_class: OpenStruct)
           error! 'Message token is not coming from Slack.', 401 if ENV.key?('SLACK_VERIFICATION_TOKEN') && payload.token != ENV['SLACK_VERIFICATION_TOKEN']
           error! 'Missing actions.', 400 unless payload.actions
           error! 'Missing action.', 400 unless payload.actions.first
 
           case payload.actions.first.name
           when 'round_choice' then
-
             round = Round.find(payload.callback_id) || error!('Round Not Found', 404)
             preference = payload.actions.first.value
             user = payload.user.id
@@ -43,7 +42,7 @@ module Api
             }.merge(message)
 
           else
-            error!("Unknown Action #{actions.first.name}", 400)
+            error!("Unknown Action #{payload.actions.first.name}", 400)
           end
         end
       end
