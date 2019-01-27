@@ -11,7 +11,7 @@ module Api
         end
 
         post '/action' do
-          payload = JSON.parse(params[:payload], object_class: OpenStruct)
+          payload = Hashie::Mash.new(JSON.parse(params[:payload]))
           error! 'Message token is not coming from Slack.', 401 if ENV.key?('SLACK_VERIFICATION_TOKEN') && payload.token != ENV['SLACK_VERIFICATION_TOKEN']
           error! 'Missing actions.', 400 unless payload.actions
           error! 'Missing action.', 400 unless payload.actions.first
@@ -20,20 +20,20 @@ module Api
           when 'round_choice' then
             round = Round.find(payload.callback_id) || error!('Round Not Found', 404)
             preference = payload.actions.first.value
-            user = payload.user.id
-            rup = round.round_user_preference.find_or_create_by(user: user)
-            rup.update!(preferences: rup.preferences + preference)
+            slack_user_id = payload.user.id
+            user = User.find_by(user_id: slack_user_id)
+            rup = round.round_user_preference.find_or_create_by!(user: user)
+            rup.update!(preferences: rup.preferences + [preference])
 
             Api::Middleware.logger.info "Updated user #{user}, preference for round #{round} to '#{rup.preferences}'."
 
-            message = payload.original_message
+            message = payload.original_message.dup
 
             message[:attachments].first[:actions].each do |action|
-              action[:style] = rup.preferences.include?(action[:value]) ? 'primary' : 'default'
+              action[:style] = rup.preferences.include?(action[:value].to_s) ? 'primary' : 'default'
             end
 
             message[:text] = 'Thanks for letting me know! you are currently setup for following days.'
-
             {
               as_user: true,
               channel: payload.channel.id,

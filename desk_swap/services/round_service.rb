@@ -21,14 +21,15 @@ module RoundService
 
   def self.start_round(team_id)
     team = Team.find(team_id)
-    team.rounds.find_or_create_by!(start_date: Date.today) do |created_round|
-      # ask each user about their preferences for this round
-      team.users.has_location.each do |u|
-        im = team.slack_client.im_open(user: u.user_id)
-        ask_preference = ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'])
-        ask_preference[:attachments].first[:callback_id] = created_round.id.to_s
-        team.slack_client.chat_postMessage(ask_preference, as_user: true)
-      end
+    return if team.rounds.exists?(start_date: Date.today)
+    round = team.rounds.create!(start_date: Date.today)
+    # ask each user about their preferences for this round
+    team.users.has_location.each do |u|
+      im = team.slack_client.im_open(user: u.user_id)
+      ask_preference = ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'], as_user: true)
+      ask_preference[:attachments].first[:callback_id] = round.id.to_s
+      puts ask_preference
+      team.slack_client.chat_postMessage(ask_preference)
     end
   end
 end
