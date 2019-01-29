@@ -1,4 +1,4 @@
 class Round < ActiveRecord::Base
   belongs_to :team
-  has_many :round_user_preference
+  has_many :user_preferences, class_name: 'RoundUserPreference'
 end

@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20190126181000) do
   create_table "round_user_preferences", force: :cascade do |t|
     t.integer "round_id"
     t.integer "user_id"
-    t.string  "preferences", default: [], null: false, array: true
+    t.jsonb   "preferences", default: {}, null: false
     t.index ["round_id"], name: "index_round_user_preferences_on_round_id", using: :btree
     t.index ["user_id"], name: "index_round_user_preferences_on_user_id", using: :btree
   end

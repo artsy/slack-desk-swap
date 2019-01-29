@@ -19,18 +19,18 @@ module Api
           case payload.actions.first.name
           when 'round_choice' then
             round = Round.find(payload.callback_id) || error!('Round Not Found', 404)
-            preference = payload.actions.first.value
+            avilable_date = payload.actions.first.value
             slack_user_id = payload.user.id
             user = User.find_by(user_id: slack_user_id)
-            rup = round.round_user_preference.find_or_create_by!(user: user)
-            rup.update!(preferences: rup.preferences + [preference])
+            rup = round.user_preferences.find_or_create_by!(user: user)
+            rup.update!(available_dates: ((rup.available_dates || []) + [avilable_date]).uniq)
 
             Api::Middleware.logger.info "Updated user #{user}, preference for round #{round} to '#{rup.preferences}'."
 
             message = payload.original_message.dup
 
             message[:attachments].first[:actions].each do |action|
-              action[:style] = rup.preferences.include?(action[:value].to_s) ? 'primary' : 'default'
+              action[:style] = rup.available_dates.include?(action[:value].to_s) ? 'primary' : 'default'
             end
 
             message[:text] = 'Thanks for letting me know! you are currently setup for following days.'

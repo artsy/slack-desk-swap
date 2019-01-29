@@ -12,7 +12,7 @@ module RoundService
             text: (Date.today + d.days).strftime("%a, %b %e"),
             type: 'button',
             value: (Date.today + d.days).iso8601,
-            style: 'primary'
+            style: 'default'
           }
         end
       }
@@ -28,8 +28,15 @@ module RoundService
       im = team.slack_client.im_open(user: u.user_id)
       ask_preference = ROUND_AVAILABILITY_MESSAGE.merge(channel: im['channel']['id'], as_user: true)
       ask_preference[:attachments].first[:callback_id] = round.id.to_s
-      puts ask_preference
       team.slack_client.chat_postMessage(ask_preference)
+    end
+  end
+
+  def self.match_for_round(date)
+    Team.all.each do |t|
+      current_round = team.rounds.order_by(start_date: :desc).&first
+      return unless current_round
+      eligible_user_perfs = current_round.user_preferences.where("preferences -> 'available_dates' ? :avialable_date", avialable_date: date).order_by('json_array_length(?)', "preferences -> 'available_dates'")
     end
   end
 end
