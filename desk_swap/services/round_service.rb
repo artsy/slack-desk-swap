@@ -19,7 +19,11 @@ module RoundService
     ]
   }
 
-  def self.start_round(team_id)
+  def self.start_new_round(date)
+    Team.where(question_day: date.wday).each { |t| start_round_for_team(team_id) }
+  end
+
+  def self.start_round_for_team(team_id)
     team = Team.find(team_id)
     return if team.rounds.exists?(start_date: Date.today)
     round = team.rounds.create!(start_date: Date.today)
