@@ -224,6 +224,7 @@ DEPENDENCIES
   rspec
   slack-ruby-bot-server
   standalone_migrations (~> 5.2)
+  unicorn
   vcr
   webmock
 
