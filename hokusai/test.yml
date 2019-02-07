@@ -2,7 +2,17 @@
 version: '2'
 services:
   slack-desk-swap:
-    command: ["bash", "test.sh"]
+    command: ./script/ci.sh
     extends:
       file: build.yml
       service: slack-desk-swap
+    ports:
+    - 8080:8080
+    environment:
+    - RACK_ENV=test
+    - DATABASE_HOST=slack-deskswap-db
+    - DATABASE_USER=postgres
+    depends_on:
+        - slack-deskswap-db
+  slack-deskswap-db:
+    image: postgres:9.6-alpine
