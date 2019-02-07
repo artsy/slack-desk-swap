@@ -1,0 +1,9 @@
+---
+version: '2'
+services:
+  slack-desk-swap:
+    extends:
+      file: build.yml
+      service: slack-desk-swap
+    ports:
+      - 8080:8080

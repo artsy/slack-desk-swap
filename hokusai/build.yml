@@ -1,0 +1,6 @@
+---
+version: '2'
+services:
+  slack-desk-swap:
+    build:
+      context: ../
