@@ -1,3 +1,5 @@
+# Slack Desk Swap Bot [![CircleCI](https://circleci.com/gh/artsy/slack-desk-swap.svg?style=svg)](https://circleci.com/gh/artsy/slack-desk-swap)
+
 ### What's this?
 
 - opt in/out per organization
